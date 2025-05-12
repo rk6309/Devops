@@ -2,7 +2,6 @@ apiVersion: networking.istio.io/v1
 kind: DestinationRule
 metadata:
   name: productpage
-  namespace: {{ .Values.namespace }}
 spec:
   host: productpage
   subsets:
@@ -14,7 +13,6 @@ apiVersion: networking.istio.io/v1
 kind: DestinationRule
 metadata:
   name: reviews
-  namespace: {{ .Values.namespace }}
 spec:
   host: reviews
   subsets:
@@ -32,7 +30,6 @@ apiVersion: networking.istio.io/v1
 kind: DestinationRule
 metadata:
   name: ratings
-  namespace: {{ .Values.namespace }}
 spec:
   host: ratings
   subsets:
@@ -53,7 +50,6 @@ apiVersion: networking.istio.io/v1
 kind: DestinationRule
 metadata:
   name: details
-  namespace: {{ .Values.namespace }}
 spec:
   host: details
   subsets:
@@ -63,4 +59,4 @@ spec:
   - name: v2
     labels:
       version: v2
-
+---

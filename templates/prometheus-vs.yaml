@@ -2,7 +2,7 @@ apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
   name: prometheus
-  namespace: {{ .Values.namespace }}
+  namespace: bookinfo1
 spec:
   hosts:
     - "*"
@@ -14,4 +14,3 @@ spec:
             host: prometheus.istio-system.svc.cluster.local
             port:
               number: 9090
-

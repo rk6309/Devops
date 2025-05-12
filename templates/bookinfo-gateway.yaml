@@ -2,28 +2,28 @@ apiVersion: networking.istio.io/v1
 kind: Gateway
 metadata:
   name: bookinfo-gateway
-  namespace: "{{ .Values.namespace }}"  # Ensure 'namespace' is defined in values.yaml
 spec:
+  # The selector matches the ingress gateway pod labels.
+  # If you installed Istio using Helm following the standard documentation, this would be "istio=ingress"
   selector:
-    istio: ingressgateway  # This ensures that Istio's ingress gateway is used
+    istio: ingressgateway # use istio default controller
   servers:
   - port:
-      number: {{ .Values.gateway.port }}  # Define the port for the gateway in values.yaml
+      number: 8080
       name: http
       protocol: HTTP
     hosts:
-    - "{{ .Values.gateway.host }}"  # Define the host for the gateway in values.yaml
+    - "*"
 ---
 apiVersion: networking.istio.io/v1
 kind: VirtualService
 metadata:
   name: bookinfo
-  namespace: "{{ .Values.namespace }}"  # Ensure 'namespace' is defined in values.yaml
 spec:
   hosts:
-  - "{{ .Values.virtualservice.host }}"  # Ensure 'host' is defined in values.yaml
+  - "*"
   gateways:
-  - bookinfo-gateway  # Ensure this matches the Gateway defined above
+  - bookinfo-gateway
   http:
   - match:
     - uri:
@@ -38,7 +38,6 @@ spec:
         prefix: /api/v1/products
     route:
     - destination:
-        host: productpage  # This should match the service name for productpage
+        host: productpage
         port:
-          number: {{ .Values.virtualservice.productpagePort }}  # Ensure 'productpagePort' is defined in values.yaml
-
+          number: 9080

@@ -2,7 +2,6 @@ apiVersion: networking.istio.io/v1
 kind: VirtualService
 metadata:
   name: productpage
-  namespace: {{ .Values.namespace }}
 spec:
   hosts:
   - productpage
@@ -16,7 +15,6 @@ apiVersion: networking.istio.io/v1
 kind: VirtualService
 metadata:
   name: reviews
-  namespace: {{ .Values.namespace }}
 spec:
   hosts:
   - reviews
@@ -30,7 +28,6 @@ apiVersion: networking.istio.io/v1
 kind: VirtualService
 metadata:
   name: ratings
-  namespace: {{ .Values.namespace }}
 spec:
   hosts:
   - ratings
@@ -44,7 +41,6 @@ apiVersion: networking.istio.io/v1
 kind: VirtualService
 metadata:
   name: details
-  namespace: {{ .Values.namespace }}
 spec:
   hosts:
   - details
@@ -54,4 +50,3 @@ spec:
         host: details
         subset: v1
 ---
-

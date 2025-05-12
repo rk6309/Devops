@@ -2,12 +2,12 @@ apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
   name: kiali
-  namespace: {{ .Values.namespace }}
+  namespace: bookinfo1
 spec:
   hosts:
     - "*"
   gateways:
-    - bookinfo-gateway
+    - bookinfo-gateway  # Reusing your existing gateway
   http:
     - match:
         - uri:
@@ -17,4 +17,3 @@ spec:
             host: kiali.istio-system.svc.cluster.local
             port:
               number: 20001
-
