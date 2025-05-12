@@ -3,7 +3,7 @@ reviews:
   v2Weight: 20
 
 ingress:
-  enabled: true  # Enable ingress if needed
+  enabled: true
   gateway:
     name: bookinfo-gateway
     port: 80
