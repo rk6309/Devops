@@ -1,0 +1,10 @@
+namespace: bookinfo1
+
+gateway:
+  port: 80
+  host: "*"
+
+virtualservice:
+  host: "*"
+  productpagePort: 9080
+

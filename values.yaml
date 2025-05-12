@@ -1,0 +1,95 @@
+namespace: bookinfo1
+
+gateway:
+  port: 80
+  host: "*"
+
+virtualservice:
+  host: "*"
+  productpagePort: 9080
+
+details:
+  servicePort: 9080
+  containerPort: 9080
+  replicaCount: 1
+  image: docker.io/istio/examples-bookinfo-details-v1:1.20.2
+
+ratings:
+  servicePort: 9080
+  containerPort: 9080
+  replicaCount: 1
+  image: docker.io/istio/examples-bookinfo-ratings-v1:1.20.2
+
+reviews:
+  servicePort: 9080
+  containerPort: 9080
+  replicaCount: 1
+  image: docker.io/istio/examples-bookinfo-reviews-v1:1.20.2
+  canary:
+    v1Weight: 80
+    v2Weight: 20
+
+productpage:
+  servicePort: 9080
+  containerPort: 9080
+  replicaCount: 1
+  image: docker.io/istio/examples-bookinfo-productpage-v1:1.20.2
+
+destinationRules:
+  productpage:
+    subsets:
+      - name: v1
+        labels:
+          version: v1
+  reviews:
+    subsets:
+      - name: v1
+        labels:
+          version: v1
+      - name: v2
+        labels:
+          version: v2
+      - name: v3
+        labels:
+          version: v3
+  ratings:
+    subsets:
+      - name: v1
+        labels:
+          version: v1
+      - name: v2
+        labels:
+          version: v2
+      - name: v2-mysql
+        labels:
+          version: v2-mysql
+      - name: v2-mysql-vm
+        labels:
+          version: v2-mysql-vm
+  details:
+    subsets:
+      - name: v1
+        labels:
+          version: v1
+      - name: v2
+        labels:
+          version: v2
+
+prometheus:
+  host: prometheus.istio-system.svc.cluster.local
+  port: 9090
+
+kiali:
+  host: kiali.istio-system.svc.cluster.local
+  port: 20001
+
+grafana:
+  host: grafana.istio-system.svc.cluster.local
+  port: 3000
+
+ingress:
+  enabled: false
+
+service:
+  type: ClusterIP
+
