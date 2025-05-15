@@ -5,7 +5,8 @@ services:
     service: details
     port: 9080
     replicas: 1
-    image: 
+    serviceAccount: bookinfo-details
+    image:
       v1: docker.io/istio/examples-bookinfo-details-v1:1.20.3
   ratings:
     name: ratings
@@ -13,7 +14,8 @@ services:
     service: ratings
     port: 9080
     replicas: 1
-    image: 
+    serviceAccount: bookinfo-ratings
+    image:
       v1: docker.io/istio/examples-bookinfo-ratings-v1:1.20.3
   reviews:
     name: reviews
@@ -21,6 +23,7 @@ services:
     service: reviews
     port: 9080
     replicas: 1
+    serviceAccount: bookinfo-reviews
     image:
       v1: docker.io/istio/examples-bookinfo-reviews-v1:1.20.3
       v2: docker.io/istio/examples-bookinfo-reviews-v2:1.20.3
@@ -31,12 +34,11 @@ services:
     service: productpage
     port: 9080
     replicas: 1
-    image: 
+    serviceAccount: bookinfo-productpage
+    image:
       v1: docker.io/istio/examples-bookinfo-productpage-v1:1.20.3
 
-
-# values.yaml for bookinfo-gateway.yaml
-
+# Gateway Configuration
 gateway:
   name: bookinfo-gateway
   selector: ingressgateway
@@ -46,13 +48,15 @@ gateway:
     protocol: HTTP
   hosts: "*"
 
+# VirtualService Configuration
 virtualservice:
   name: bookinfo
   hosts: "*"
   gateway: bookinfo-gateway
   port:
     number: 9080
-# values.yaml for destination-rules
+
+# Destination Rules
 destinationRules:
   productpage:
     name: productpage
@@ -78,12 +82,6 @@ destinationRules:
     subsets:
       - name: v1
         version: v1
-      - name: v2
-        version: v2
-      - name: v2-mysql
-        version: v2-mysql
-      - name: v2-mysql-vm
-        version: v2-mysql-vm
 
   details:
     name: details
@@ -91,19 +89,16 @@ destinationRules:
     subsets:
       - name: v1
         version: v1
-      - name: v2
-        version: v2
 
-# values.yaml for prometheus-vs
-
+# Prometheus VirtualService
 prometheus:
   virtualService:
     name: prometheus
     gateway: bookinfo-gateway
     destinationHost: prometheus.istio-system.svc.cluster.local
     port: 9090
-# values.yaml for kiali-vs
 
+# Kiali VirtualService
 kiali:
   virtualService:
     name: kiali
@@ -111,8 +106,8 @@ kiali:
     uriPrefix: "/kiali"
     destinationHost: kiali.istio-system.svc.cluster.local
     port: 20001
-# values.yaml for grafana-vs
 
+# Grafana VirtualService
 grafana:
   virtualService:
     name: grafana
@@ -125,4 +120,3 @@ ingress:
 service:
   type: LoadBalancer
   port: 9080
-
