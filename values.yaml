@@ -1,10 +1,128 @@
-reviews:
-  v1Weight: 80
-  v2Weight: 20
+services:
+  details:
+    name: details
+    app: details
+    service: details
+    port: 9080
+    replicas: 1
+    image: 
+      v1: docker.io/istio/examples-bookinfo-details-v1:1.20.3
+  ratings:
+    name: ratings
+    app: ratings
+    service: ratings
+    port: 9080
+    replicas: 1
+    image: 
+      v1: docker.io/istio/examples-bookinfo-ratings-v1:1.20.3
+  reviews:
+    name: reviews
+    app: reviews
+    service: reviews
+    port: 9080
+    replicas: 1
+    image:
+      v1: docker.io/istio/examples-bookinfo-reviews-v1:1.20.3
+      v2: docker.io/istio/examples-bookinfo-reviews-v2:1.20.3
+      v3: docker.io/istio/examples-bookinfo-reviews-v3:1.20.3
+  productpage:
+    name: productpage
+    app: productpage
+    service: productpage
+    port: 9080
+    replicas: 1
+    image: 
+      v1: docker.io/istio/examples-bookinfo-productpage-v1:1.20.3
 
+
+# values.yaml for bookinfo-gateway.yaml
+
+gateway:
+  name: bookinfo-gateway
+  selector: ingressgateway
+  port:
+    number: 8080
+    name: http
+    protocol: HTTP
+  hosts: "*"
+
+virtualservice:
+  name: bookinfo
+  hosts: "*"
+  gateway: bookinfo-gateway
+  port:
+    number: 9080
+# values.yaml for destination-rules
+destinationRules:
+  productpage:
+    name: productpage
+    host: productpage
+    subsets:
+      - name: v1
+        version: v1
+
+  reviews:
+    name: reviews
+    host: reviews
+    subsets:
+      - name: v1
+        version: v1
+      - name: v2
+        version: v2
+      - name: v3
+        version: v3
+
+  ratings:
+    name: ratings
+    host: ratings
+    subsets:
+      - name: v1
+        version: v1
+      - name: v2
+        version: v2
+      - name: v2-mysql
+        version: v2-mysql
+      - name: v2-mysql-vm
+        version: v2-mysql-vm
+
+  details:
+    name: details
+    host: details
+    subsets:
+      - name: v1
+        version: v1
+      - name: v2
+        version: v2
+
+# values.yaml for prometheus-vs
+
+prometheus:
+  virtualService:
+    name: prometheus
+    gateway: bookinfo-gateway
+    destinationHost: prometheus.istio-system.svc.cluster.local
+    port: 9090
+# values.yaml for kiali-vs
+
+kiali:
+  virtualService:
+    name: kiali
+    gateway: bookinfo-gateway
+    uriPrefix: "/kiali"
+    destinationHost: kiali.istio-system.svc.cluster.local
+    port: 20001
+# values.yaml for grafana-vs
+
+grafana:
+  virtualService:
+    name: grafana
+    gateway: bookinfo-gateway
+    uriPrefix: "/grafana"
+    destinationHost: grafana.istio-system.svc.cluster.local
+    port: 3000
 ingress:
   enabled: true
-  gateway:
-    name: bookinfo-gateway
-    port: 80
+service:
+  type: LoadBalancer
+  port: 9080
 

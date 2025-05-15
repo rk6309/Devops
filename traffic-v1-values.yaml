@@ -1,0 +1,12 @@
+# traffic-values.yaml
+
+traffic:
+  productpage:
+    name: productpage
+  reviews:
+    name: reviews
+  ratings:
+    name: ratings
+  details:
+    name: details
+

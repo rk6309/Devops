@@ -1,0 +1,10 @@
+reviews:
+  v1Weight: 80
+  v2Weight: 20
+
+ingress:
+  enabled: true
+  gateway:
+    name: bookinfo-gateway
+    port: 80
+

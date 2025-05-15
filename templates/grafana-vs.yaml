@@ -1,18 +1,19 @@
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
-  name: grafana
+  name: {{ .Values.grafana.virtualService.name }}
 spec:
   hosts:
     - "*"
   gateways:
-    - bookinfo-gateway  # Use the existing gateway
+    - {{ .Values.grafana.virtualService.gateway }}
   http:
     - match:
         - uri:
-            prefix: "/grafana"
+            prefix: "{{ .Values.grafana.virtualService.uriPrefix }}"
       route:
         - destination:
-            host: grafana.istio-system.svc.cluster.local  # Adjust based on your setup
+            host: {{ .Values.grafana.virtualService.destinationHost }}
             port:
-              number: 3000
+              number: {{ .Values.grafana.virtualService.port }}
+

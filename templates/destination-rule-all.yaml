@@ -1,62 +1,50 @@
 apiVersion: networking.istio.io/v1
 kind: DestinationRule
 metadata:
-  name: productpage
+  name: {{ .Values.destinationRules.productpage.name }}
 spec:
-  host: productpage
+  host: {{ .Values.destinationRules.productpage.host }}
   subsets:
-  - name: v1
-    labels:
-      version: v1
+    - name: v1
+      labels:
+        version: v1
 ---
 apiVersion: networking.istio.io/v1
 kind: DestinationRule
 metadata:
-  name: reviews
+  name: {{ .Values.destinationRules.reviews.name }}
 spec:
-  host: reviews
+  host: {{ .Values.destinationRules.reviews.host }}
   subsets:
-  - name: v1
-    labels:
-      version: v1
-  - name: v2
-    labels:
-      version: v2
-  - name: v3
-    labels:
-      version: v3
+    {{- range .Values.destinationRules.reviews.subsets }}
+    - name: {{ .name }}
+      labels:
+        version: {{ .version }}
+    {{- end }}
 ---
 apiVersion: networking.istio.io/v1
 kind: DestinationRule
 metadata:
-  name: ratings
+  name: {{ .Values.destinationRules.ratings.name }}
 spec:
-  host: ratings
+  host: {{ .Values.destinationRules.ratings.host }}
   subsets:
-  - name: v1
-    labels:
-      version: v1
-  - name: v2
-    labels:
-      version: v2
-  - name: v2-mysql
-    labels:
-      version: v2-mysql
-  - name: v2-mysql-vm
-    labels:
-      version: v2-mysql-vm
+    {{- range .Values.destinationRules.ratings.subsets }}
+    - name: {{ .name }}
+      labels:
+        version: {{ .version }}
+    {{- end }}
 ---
 apiVersion: networking.istio.io/v1
 kind: DestinationRule
 metadata:
-  name: details
+  name: {{ .Values.destinationRules.details.name }}
 spec:
-  host: details
+  host: {{ .Values.destinationRules.details.host }}
   subsets:
-  - name: v1
-    labels:
-      version: v1
-  - name: v2
-    labels:
-      version: v2
----
+    {{- range .Values.destinationRules.details.subsets }}
+    - name: {{ .name }}
+      labels:
+        version: {{ .version }}
+    {{- end }}
+

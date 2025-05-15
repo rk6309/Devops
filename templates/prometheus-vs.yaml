@@ -1,15 +1,16 @@
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
 metadata:
-  name: prometheus
+  name: {{ .Values.prometheus.virtualService.name }}
 spec:
   hosts:
     - "*"
   gateways:
-    - bookinfo-gateway
+    - {{ .Values.prometheus.virtualService.gateway }}
   http:
     - route:
         - destination:
-            host: prometheus.istio-system.svc.cluster.local
+            host: {{ .Values.prometheus.virtualService.destinationHost }}
             port:
-              number: 9090
+              number: {{ .Values.prometheus.virtualService.port }}
+
